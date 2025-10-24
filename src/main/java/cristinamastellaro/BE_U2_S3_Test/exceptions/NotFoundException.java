@@ -6,4 +6,8 @@ public class NotFoundException extends RuntimeException {
     public NotFoundException(UUID id) {
         super("The id " + id + " has not been found");
     }
+
+    public NotFoundException(String email) {
+        super("The email " + email + " is not connected to a user");
+    }
 }

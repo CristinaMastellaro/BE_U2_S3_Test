@@ -5,6 +5,7 @@ import cristinamastellaro.BE_U2_S3_Test.payloads.EventDTO;
 import cristinamastellaro.BE_U2_S3_Test.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,7 +16,8 @@ public class EventController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    private Event saveEvent(@RequestBody EventDTO eventPayload) {
+    @PreAuthorize("hasAuthority('ORGANIZER')")
+    public Event saveEvent(@RequestBody EventDTO eventPayload) {
         return eServ.saveEvent(eventPayload);
     }
 }

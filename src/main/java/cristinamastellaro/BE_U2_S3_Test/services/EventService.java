@@ -2,6 +2,8 @@ package cristinamastellaro.BE_U2_S3_Test.services;
 
 import cristinamastellaro.BE_U2_S3_Test.entities.Event;
 import cristinamastellaro.BE_U2_S3_Test.entities.Person;
+import cristinamastellaro.BE_U2_S3_Test.entities.Role;
+import cristinamastellaro.BE_U2_S3_Test.exceptions.UnauthorizedException;
 import cristinamastellaro.BE_U2_S3_Test.payloads.EventDTO;
 import cristinamastellaro.BE_U2_S3_Test.repositories.EventRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +23,10 @@ public class EventService {
     private PersonService pServ;
 
     public Event saveEvent(EventDTO newEventInfo) {
-        // Controlliamo che l'organizzatore dell'evento esista
+        // Controlliamo che l'organizzatore dell'evento esista e sia un organizer o admin
         Person creator = pServ.findPersonById(newEventInfo.creatorId());
+        if (creator.getRole().equals(Role.SIMPLEUSER))
+            throw new UnauthorizedException("The user is not an organizer or admin and can't create new events!");
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
         LocalDate date = LocalDate.parse(newEventInfo.date(), formatter);

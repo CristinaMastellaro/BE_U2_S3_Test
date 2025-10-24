@@ -33,4 +33,10 @@ public class PersonService {
         log.info("The user " + newUser.getName() + " has been registered!");
         return newUser;
     }
+
+    public Person findPersonByEmail(String email) {
+        Person found = uRepo.findByEmail(email);
+        if (found == null) throw new NotFoundException(email);
+        return found;
+    }
 }
