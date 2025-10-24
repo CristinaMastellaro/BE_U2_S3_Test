@@ -2,10 +2,12 @@ package cristinamastellaro.BE_U2_S3_Test.controllers;
 
 import cristinamastellaro.BE_U2_S3_Test.entities.Event;
 import cristinamastellaro.BE_U2_S3_Test.entities.Person;
+import cristinamastellaro.BE_U2_S3_Test.entities.Role;
 import cristinamastellaro.BE_U2_S3_Test.services.EventService;
 import cristinamastellaro.BE_U2_S3_Test.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +30,14 @@ public class PersonController {
 
     @DeleteMapping("/partecipate/{idEvent}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void cancellReservation(@AuthenticationPrincipal Person currentAuthenticatedUser, @PathVariable UUID idEvent) {
+    public void cancelReservation(@AuthenticationPrincipal Person currentAuthenticatedUser, @PathVariable UUID idEvent) {
         Event event = eServ.findEventById(idEvent);
         pServ.deleteParticipation(currentAuthenticatedUser.getId(), event);
+    }
+
+    @PatchMapping("/{idUser}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Person changeRole(@PathVariable UUID idUser, @RequestParam Role newRole) {
+        return pServ.changeRole(idUser, newRole);
     }
 }

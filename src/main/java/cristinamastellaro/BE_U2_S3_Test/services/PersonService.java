@@ -22,8 +22,6 @@ public class PersonService {
     private PersonRepository uRepo;
     @Autowired
     private PasswordEncoder bCrypt;
-//    @Autowired
-//    private EventService eServ;
 
     public Person findPersonById(UUID id) {
         return uRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
@@ -46,7 +44,6 @@ public class PersonService {
 
     public void partecipateToEvent(Person currentAuthenticatedUser, Event event) {
         // Assicuriamoci che evento esista, che possibilmente non sia già passato e che il numero massimo di persone non sia raggiunto
-//        Event event = eServ.findEventById(idEvent);
         if (event.getDate().isBefore(LocalDate.now())) throw new EventFinishedException(event.getTitle());
         if (event.getMaxNumPeople() <= event.getPeopleThatWillPartecipate().size())
             throw new MaxNumReachedException(event.getTitle());
@@ -71,5 +68,18 @@ public class PersonService {
         person.setEventsToPartecipate(bookedEvents);
         uRepo.save(person);
         log.info("Successfully cancelled the booking for the event " + event.getTitle());
+    }
+
+    public Person changeRole(UUID idPersonToChange, Role role) {
+        // Controlliamo che id sia di una persona esistente
+        Person personToChangeStatus = findPersonById(idPersonToChange);
+
+        personToChangeStatus.setRole(role);
+
+        uRepo.save(personToChangeStatus);
+
+        log.info("Successfully change the status!");
+
+        return personToChangeStatus;
     }
 }
