@@ -1,5 +1,6 @@
 package cristinamastellaro.BE_U2_S3_Test.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,6 +33,10 @@ public class Person implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "creator")
+    @JsonIgnore
+    private List<Event> organizedEvents;
 
     public Person(String email, String password, Role role) {
         this.email = email;
