@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
+@Table(name = "people")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-public class User implements UserDetails {
+public class Person implements UserDetails {
 
     @Id
     @GeneratedValue
@@ -31,13 +31,13 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User(String email, String password, Role role) {
+    public Person(String email, String password, Role role) {
         this.email = email;
         this.password = password;
         this.role = role;
     }
 
-    public User(String name, String surname, String email, String password, Role role) {
+    public Person(String name, String surname, String email, String password, Role role) {
         this(email, password, role);
         this.name = name;
         this.surname = surname;

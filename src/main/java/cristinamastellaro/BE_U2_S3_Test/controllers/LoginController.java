@@ -1,6 +1,6 @@
 package cristinamastellaro.BE_U2_S3_Test.controllers;
 
-import cristinamastellaro.BE_U2_S3_Test.entities.User;
+import cristinamastellaro.BE_U2_S3_Test.entities.Person;
 import cristinamastellaro.BE_U2_S3_Test.payloads.UserPayload;
 import cristinamastellaro.BE_U2_S3_Test.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ public class LoginController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public User saveUser(@RequestBody UserPayload newUser) {
+    public Person saveUser(@RequestBody UserPayload newUser) {
         return uServ.saveUser(newUser);
     }
 }
