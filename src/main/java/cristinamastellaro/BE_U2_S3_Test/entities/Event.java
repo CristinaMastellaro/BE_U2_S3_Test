@@ -12,7 +12,6 @@ import java.util.UUID;
 @Setter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 public class Event {
     @Id
     @GeneratedValue
@@ -30,5 +29,14 @@ public class Event {
 
     @ManyToOne
     private Person creator;
+
+    public Event(String title, String description, String place, LocalDate date, int maxNumPeople, Person creator) {
+        this.title = title;
+        this.description = description;
+        this.place = place;
+        this.date = date;
+        this.maxNumPeople = maxNumPeople;
+        this.creator = creator;
+    }
 
 }

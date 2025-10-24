@@ -22,4 +22,10 @@ public class ExceptionsHandler {
     public GeneralErrorDTO handleUnauthorizedExc(UnauthorizedException ex) {
         return new GeneralErrorDTO(ex.getMessage(), LocalDateTime.now());
     }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public GeneralErrorDTO handleNotFoundExc(NotFoundException ex) {
+        return new GeneralErrorDTO(ex.getMessage(), LocalDateTime.now());
+    }
 }
