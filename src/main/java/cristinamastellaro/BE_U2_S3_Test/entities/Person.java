@@ -38,6 +38,12 @@ public class Person implements UserDetails {
     @JsonIgnore
     private List<Event> organizedEvents;
 
+    @ManyToMany
+    @JoinTable(name = "bookings",
+            joinColumns = @JoinColumn(name = "person_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id"))
+    private List<Event> eventsToPartecipate;
+
     public Person(String email, String password, Role role) {
         this.email = email;
         this.password = password;

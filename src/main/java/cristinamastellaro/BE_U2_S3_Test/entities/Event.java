@@ -1,9 +1,11 @@
 package cristinamastellaro.BE_U2_S3_Test.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,6 +31,10 @@ public class Event {
 
     @ManyToOne
     private Person creator;
+
+    @ManyToMany(mappedBy = "eventsToPartecipate")
+    @JsonIgnore
+    private List<Person> peopleThatWillPartecipate;
 
     public Event(String title, String description, String place, LocalDate date, int maxNumPeople, Person creator) {
         this.title = title;

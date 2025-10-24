@@ -6,6 +6,7 @@ import cristinamastellaro.BE_U2_S3_Test.entities.Role;
 import cristinamastellaro.BE_U2_S3_Test.exceptions.NotFoundException;
 import cristinamastellaro.BE_U2_S3_Test.exceptions.UnauthorizedException;
 import cristinamastellaro.BE_U2_S3_Test.payloads.EventDTO;
+import cristinamastellaro.BE_U2_S3_Test.payloads.UpdateEventDTO;
 import cristinamastellaro.BE_U2_S3_Test.repositories.EventRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,9 @@ public class EventService {
         return eRepo.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
-    public Event saveEvent(EventDTO newEventInfo) {
+    public Event saveEvent(UUID idOrganizer, EventDTO newEventInfo) {
         // Controlliamo che l'organizzatore dell'evento esista e sia un organizer o admin
-        Person creator = pServ.findPersonById(newEventInfo.creatorId());
+        Person creator = pServ.findPersonById(idOrganizer);
         if (creator.getRole().equals(Role.SIMPLEUSER))
             throw new UnauthorizedException("The user is not an organizer or admin and can't create new events!");
 
@@ -45,7 +46,7 @@ public class EventService {
         return newEvent;
     }
 
-    public Event modifyEvent(UUID idOrganizer, UUID idEvent, EventDTO newInfo) {
+    public Event modifyEvent(UUID idOrganizer, UUID idEvent, UpdateEventDTO newInfo) {
         // Vediamo se l'evento e l'organizer esistono
         Event eventToModify = findEventById(idEvent);
         Person organizer = pServ.findPersonById(idOrganizer);
