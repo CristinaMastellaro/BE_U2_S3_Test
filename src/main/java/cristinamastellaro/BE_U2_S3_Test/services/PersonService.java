@@ -3,10 +3,7 @@ package cristinamastellaro.BE_U2_S3_Test.services;
 import cristinamastellaro.BE_U2_S3_Test.entities.Event;
 import cristinamastellaro.BE_U2_S3_Test.entities.Person;
 import cristinamastellaro.BE_U2_S3_Test.entities.Role;
-import cristinamastellaro.BE_U2_S3_Test.exceptions.EmailAlreadyUsedException;
-import cristinamastellaro.BE_U2_S3_Test.exceptions.EventFinishedException;
-import cristinamastellaro.BE_U2_S3_Test.exceptions.MaxNumReachedException;
-import cristinamastellaro.BE_U2_S3_Test.exceptions.NotFoundException;
+import cristinamastellaro.BE_U2_S3_Test.exceptions.*;
 import cristinamastellaro.BE_U2_S3_Test.payloads.PersonPayload;
 import cristinamastellaro.BE_U2_S3_Test.repositories.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -62,5 +59,17 @@ public class PersonService {
         uRepo.save(personThatWantsToPartecipate);
 
         log.info(currentAuthenticatedUser.getName() + " will partecipate to the event " + event.getTitle());
+    }
+
+    public void deleteParticipation(UUID idPerson, Event event) {
+        // Assicuriamoci che la persona sia iscritta a quell'evento
+        Person person = findPersonById(idPerson);
+        if (!person.getEventsToPartecipate().contains(event)) throw new NotBookedException(event.getTitle());
+
+        List<Event> bookedEvents = person.getEventsToPartecipate();
+        bookedEvents.remove(event);
+        person.setEventsToPartecipate(bookedEvents);
+        uRepo.save(person);
+        log.info("Successfully cancelled the booking for the event " + event.getTitle());
     }
 }

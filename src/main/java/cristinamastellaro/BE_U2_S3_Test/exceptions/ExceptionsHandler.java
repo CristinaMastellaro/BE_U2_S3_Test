@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class ExceptionsHandler {
 
-    @ExceptionHandler({EmailAlreadyUsedException.class, EventFinishedException.class, MaxNumReachedException.class})
+    @ExceptionHandler({EmailAlreadyUsedException.class, EventFinishedException.class, MaxNumReachedException.class, NotBookedException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public GeneralErrorDTO handleEmailAlreadyUsedExc(Exception ex) {
         return new GeneralErrorDTO(ex.getMessage(), LocalDateTime.now());

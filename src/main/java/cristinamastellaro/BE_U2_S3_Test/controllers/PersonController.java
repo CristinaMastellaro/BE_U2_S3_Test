@@ -5,11 +5,9 @@ import cristinamastellaro.BE_U2_S3_Test.entities.Person;
 import cristinamastellaro.BE_U2_S3_Test.services.EventService;
 import cristinamastellaro.BE_U2_S3_Test.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -26,5 +24,12 @@ public class PersonController {
         // IntelliJ si è lamentato per aver trovate una circolarità... Questo è un modo per risolverlo
         Event event = eServ.findEventById(idEvent);
         pServ.partecipateToEvent(currentAuthenticatedUser, event);
+    }
+
+    @DeleteMapping("/partecipate/{idEvent}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cancellReservation(@AuthenticationPrincipal Person currentAuthenticatedUser, @PathVariable UUID idEvent) {
+        Event event = eServ.findEventById(idEvent);
+        pServ.deleteParticipation(currentAuthenticatedUser.getId(), event);
     }
 }
