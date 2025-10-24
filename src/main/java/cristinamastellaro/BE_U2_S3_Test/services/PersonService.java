@@ -88,7 +88,6 @@ public class PersonService {
 
     public List<Event> checkReservedEvents(UUID id) {
         Person person = findPersonById(id);
-        System.out.println(person.getEventsToPartecipate());
         return person.getEventsToPartecipate();
     }
 }
