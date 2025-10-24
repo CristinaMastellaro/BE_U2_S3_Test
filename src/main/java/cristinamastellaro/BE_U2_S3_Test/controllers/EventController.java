@@ -2,6 +2,7 @@ package cristinamastellaro.BE_U2_S3_Test.controllers;
 
 import cristinamastellaro.BE_U2_S3_Test.entities.Event;
 import cristinamastellaro.BE_U2_S3_Test.entities.Person;
+import cristinamastellaro.BE_U2_S3_Test.exceptions.PayloadValidationException;
 import cristinamastellaro.BE_U2_S3_Test.payloads.EventDTO;
 import cristinamastellaro.BE_U2_S3_Test.payloads.UpdateEventDTO;
 import cristinamastellaro.BE_U2_S3_Test.services.EventService;
@@ -9,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -22,12 +26,16 @@ public class EventController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyAuthority('ORGANIZER', 'ADMIN')")
-    public Event saveEvent(@AuthenticationPrincipal Person currentAuthenticatedUser, @RequestBody EventDTO eventPayload) {
+    public Event saveEvent(@AuthenticationPrincipal Person currentAuthenticatedUser, @RequestBody @Validated EventDTO eventPayload, BindingResult validation) {
+        if (validation.hasErrors())
+            throw new PayloadValidationException(validation.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList());
         return eServ.saveEvent(currentAuthenticatedUser.getId(), eventPayload);
     }
 
     @PutMapping("/{idEvent}")
-    public Event modifyEvent(@AuthenticationPrincipal Person currentAuthenticatedUser, @PathVariable UUID idEvent, @RequestBody UpdateEventDTO eventPayload) {
+    public Event modifyEvent(@AuthenticationPrincipal Person currentAuthenticatedUser, @PathVariable UUID idEvent, @RequestBody @Validated UpdateEventDTO eventPayload, BindingResult validation) {
+        if (validation.hasErrors())
+            throw new PayloadValidationException(validation.getFieldErrors().stream().map(FieldError::getDefaultMessage).toList());
         return eServ.modifyEvent(currentAuthenticatedUser.getId(), idEvent, eventPayload);
     }
 

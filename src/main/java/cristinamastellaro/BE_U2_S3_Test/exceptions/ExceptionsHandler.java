@@ -1,6 +1,7 @@
 package cristinamastellaro.BE_U2_S3_Test.exceptions;
 
 import cristinamastellaro.BE_U2_S3_Test.payloads.GeneralErrorDTO;
+import cristinamastellaro.BE_U2_S3_Test.payloads.ValidationErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +17,12 @@ public class ExceptionsHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public GeneralErrorDTO handleEmailAlreadyUsedExc(Exception ex) {
         return new GeneralErrorDTO(ex.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(PayloadValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ValidationErrorDTO handleValidationExc(PayloadValidationException ex) {
+        return new ValidationErrorDTO(ex.getMessage(), LocalDateTime.now(), ex.getErrorsList());
     }
 
     @ExceptionHandler(UnauthorizedException.class)
