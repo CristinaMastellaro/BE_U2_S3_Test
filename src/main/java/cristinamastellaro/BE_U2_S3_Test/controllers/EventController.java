@@ -29,4 +29,10 @@ public class EventController {
     public Event modifyEvent(@AuthenticationPrincipal Person currentAuthenticatedUser, @PathVariable UUID idEvent, @RequestBody EventDTO eventPayload) {
         return eServ.modifyEvent(currentAuthenticatedUser.getId(), idEvent, eventPayload);
     }
+    
+    @DeleteMapping("/{idEvent}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteEvent(@AuthenticationPrincipal Person currentAuthenticatedUser, @PathVariable UUID idEvent) {
+        eServ.deleteEvent(currentAuthenticatedUser.getId(), idEvent);
+    }
 }

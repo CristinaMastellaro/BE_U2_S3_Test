@@ -70,4 +70,16 @@ public class EventService {
         log.info("Event modified!");
         return eventToModify;
     }
+
+    public void deleteEvent(UUID idOrganizer, UUID idEvent) {
+        Event eventToDelete = findEventById(idEvent);
+
+        // Assicuriamoci che chi è autenticato sia effettivamente l'organizzatore del viaggio da eliminare
+        Person organizer = pServ.findPersonById(idOrganizer);
+        if (eventToDelete.getCreator() != organizer)
+            throw new UnauthorizedException("Can't delete an event that you haven't created");
+
+        eRepo.delete(eventToDelete);
+        log.info("Event cancelled!");
+    }
 }
