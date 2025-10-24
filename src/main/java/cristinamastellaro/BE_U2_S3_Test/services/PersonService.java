@@ -3,8 +3,8 @@ package cristinamastellaro.BE_U2_S3_Test.services;
 import cristinamastellaro.BE_U2_S3_Test.entities.Person;
 import cristinamastellaro.BE_U2_S3_Test.entities.Role;
 import cristinamastellaro.BE_U2_S3_Test.exceptions.EmailAlreadyUsedException;
-import cristinamastellaro.BE_U2_S3_Test.payloads.UserPayload;
-import cristinamastellaro.BE_U2_S3_Test.repositories.UserRepository;
+import cristinamastellaro.BE_U2_S3_Test.payloads.PersonPayload;
+import cristinamastellaro.BE_U2_S3_Test.repositories.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,16 +12,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class UserService {
+public class PersonService {
     @Autowired
-    private UserRepository uRepo;
+    private PersonRepository uRepo;
     @Autowired
     private PasswordEncoder bCrypt;
 
-    public Person saveUser(UserPayload userInfo) {
+    public Person savePerson(PersonPayload userInfo) {
         if (uRepo.existsByEmail(userInfo.email())) throw new EmailAlreadyUsedException(userInfo.email());
 
-        Person newUser = new Person(userInfo.name(), userInfo.surname(), userInfo.email(), bCrypt.encode(userInfo.password()), Role.USER);
+        Person newUser = new Person(userInfo.name(), userInfo.surname(), userInfo.email(), bCrypt.encode(userInfo.password()), Role.SIMPLEUSER);
         uRepo.save(newUser);
         log.info("The user " + newUser.getName() + " has been registered!");
         return newUser;

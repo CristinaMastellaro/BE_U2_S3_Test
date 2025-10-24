@@ -1,5 +1,6 @@
 package cristinamastellaro.BE_U2_S3_Test.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Setter
 @ToString
 @NoArgsConstructor
+@JsonIgnoreProperties({"password", "authorities", "enabled", "accountNonLocked", "accountNonExpired", "credentialsNonExpired"})
 public class Person implements UserDetails {
 
     @Id
