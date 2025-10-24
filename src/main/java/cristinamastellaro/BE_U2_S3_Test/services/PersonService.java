@@ -47,9 +47,12 @@ public class PersonService {
         if (event.getDate().isBefore(LocalDate.now())) throw new EventFinishedException(event.getTitle());
         if (event.getMaxNumPeople() <= event.getPeopleThatWillPartecipate().size())
             throw new MaxNumReachedException(event.getTitle());
+        // Assicuriamoci anche che la persona non si sia già prenotata all'evento
+        Person personThatWantsToPartecipate = findPersonById(currentAuthenticatedUser.getId());
+        if (personThatWantsToPartecipate.getEventsToPartecipate().contains(event))
+            throw new AlreadyBookedException(event.getTitle());
 
         // Prenota l'evento
-        Person personThatWantsToPartecipate = findPersonById(currentAuthenticatedUser.getId());
         List<Event> currentEventsAlreadyBookedByPerson = personThatWantsToPartecipate.getEventsToPartecipate();
         currentEventsAlreadyBookedByPerson.add(event);
         currentAuthenticatedUser.setEventsToPartecipate(currentEventsAlreadyBookedByPerson);
@@ -85,8 +88,6 @@ public class PersonService {
 
     public List<Event> checkReservedEvents(UUID id) {
         Person person = findPersonById(id);
-        List<Event> myEvents = person.getEventsToPartecipate();
-
-        return myEvents;
+        return person.getEventsToPartecipate();
     }
 }

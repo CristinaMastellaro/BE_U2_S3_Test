@@ -22,7 +22,7 @@ public class PersonController {
     @Autowired
     private EventService eServ;
 
-    @PutMapping("/partecipate/{idEvent}")
+    @PatchMapping("/partecipate/{idEvent}")
     public void partecipateToEvent(@AuthenticationPrincipal Person currentAuthenticatedUser, @PathVariable UUID idEvent) {
         // IntelliJ si è lamentato per aver trovate una circolarità... Questo è un modo per risolverlo
         Event event = eServ.findEventById(idEvent);
