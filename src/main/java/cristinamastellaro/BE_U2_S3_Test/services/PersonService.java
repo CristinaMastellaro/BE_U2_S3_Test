@@ -82,4 +82,11 @@ public class PersonService {
 
         return personToChangeStatus;
     }
+
+    public List<Event> checkReservedEvents(UUID id) {
+        Person person = findPersonById(id);
+        List<Event> myEvents = person.getEventsToPartecipate();
+
+        return myEvents;
+    }
 }

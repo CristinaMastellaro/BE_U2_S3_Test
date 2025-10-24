@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -39,5 +40,10 @@ public class PersonController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public Person changeRole(@PathVariable UUID idUser, @RequestParam Role newRole) {
         return pServ.changeRole(idUser, newRole);
+    }
+
+    @GetMapping("/reservations")
+    public List<Event> getMyReservations(@AuthenticationPrincipal Person currentAuthUser) {
+        return pServ.checkReservedEvents(currentAuthUser.getId());
     }
 }

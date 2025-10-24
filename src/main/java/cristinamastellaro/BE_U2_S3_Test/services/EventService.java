@@ -51,7 +51,7 @@ public class EventService {
         Event eventToModify = findEventById(idEvent);
         Person organizer = pServ.findPersonById(idOrganizer);
 
-        // Assicuriamoci che chi è autenticato sia effettvamente l'organizzatore del viaggio da modificare
+        // Assicuriamoci che chi è autenticato sia effettivamente l'organizzatore del viaggio da modificare
         if (eventToModify.getCreator() != organizer)
             throw new UnauthorizedException("Can't update an event that you haven't created");
 

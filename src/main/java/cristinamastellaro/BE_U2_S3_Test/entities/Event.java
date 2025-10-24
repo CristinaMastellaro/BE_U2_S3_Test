@@ -2,7 +2,10 @@ package cristinamastellaro.BE_U2_S3_Test.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,7 +16,6 @@ import java.util.UUID;
 @Table(name = "events")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 public class Event {
     @Id
@@ -46,4 +48,16 @@ public class Event {
         this.creator = creator;
     }
 
+    @Override
+    public String toString() {
+        return "Event{" +
+                "creator=" + creator +
+                ", maxNumPeople=" + maxNumPeople +
+                ", date=" + date +
+                ", place='" + place + '\'' +
+                ", description='" + description + '\'' +
+                ", title='" + title + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }
