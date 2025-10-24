@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +35,7 @@ public class Event {
 
     @ManyToMany(mappedBy = "eventsToPartecipate")
     @JsonIgnore
-    private List<Person> peopleThatWillPartecipate;
+    private List<Person> peopleThatWillPartecipate = new ArrayList<>();
 
     public Event(String title, String description, String place, LocalDate date, int maxNumPeople, Person creator) {
         this.title = title;

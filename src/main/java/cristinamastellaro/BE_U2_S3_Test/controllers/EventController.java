@@ -21,7 +21,7 @@ public class EventController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAnyAuthority('ORGANIZER', 'ADMIN)")
+    @PreAuthorize("hasAnyAuthority('ORGANIZER', 'ADMIN')")
     public Event saveEvent(@AuthenticationPrincipal Person currentAuthenticatedUser, @RequestBody EventDTO eventPayload) {
         return eServ.saveEvent(currentAuthenticatedUser.getId(), eventPayload);
     }
@@ -36,7 +36,4 @@ public class EventController {
     public void deleteEvent(@AuthenticationPrincipal Person currentAuthenticatedUser, @PathVariable UUID idEvent) {
         eServ.deleteEvent(currentAuthenticatedUser.getId(), idEvent);
     }
-
-    @PutMapping("/{idEvent}")
-    public Event partecipateToEvent
 }
