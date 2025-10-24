@@ -42,6 +42,7 @@ public class Person implements UserDetails {
     private List<Event> organizedEvents;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(name = "bookings",
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id"))
