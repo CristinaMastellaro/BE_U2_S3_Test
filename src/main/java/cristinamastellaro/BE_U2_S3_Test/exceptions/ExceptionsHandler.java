@@ -16,4 +16,10 @@ public class ExceptionsHandler {
     public GeneralErrorDTO handleEmailAlreadyUsedExc(EmailAlreadyUsedException ex) {
         return new GeneralErrorDTO(ex.getMessage(), LocalDateTime.now());
     }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public GeneralErrorDTO handleUnauthorizedExc(UnauthorizedException ex) {
+        return new GeneralErrorDTO(ex.getMessage(), LocalDateTime.now());
+    }
 }
